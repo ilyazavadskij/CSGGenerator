@@ -4,6 +4,8 @@
   "finalStates": [17],
   "sigma": ["1"],
   "gamma": ["1", "B", "#", "$", "^"],
+  "leftMarker": "$",
+  "rightMarker": "^",
   "transitions": [
     {"from": 1,  "to": 2,  "by": "^", "writing": "^", "direction": "LEFT" },
     {"from": 1,  "to": 3,  "by": "1", "writing": "1", "direction": "RIGHT"},
