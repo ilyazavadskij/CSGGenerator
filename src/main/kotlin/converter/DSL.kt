@@ -44,9 +44,9 @@ internal class Scheme(val lba: LBA) {
   class DslProduction(val production: Production, val nonTerminals: Set<String>, val terminals: Set<String>)
 
   sealed class DslSymbol(open val s: String) {
-    data class NonTerminal internal constructor(override val s: String): DslSymbol(s)
-    data class Terminal internal constructor(override val s: String): DslSymbol(s)
-    object TO: DslSymbol("<separator>")
+    data class NonTerminal internal constructor(override val s: String) : DslSymbol(s)
+    data class Terminal internal constructor(override val s: String) : DslSymbol(s)
+    object TO : DslSymbol("<separator>")
   }
 
   fun n(s: String): DslSymbol.NonTerminal = DslSymbol.NonTerminal(s)
@@ -57,6 +57,7 @@ internal class Scheme(val lba: LBA) {
 
   inline val sigma: Set<Char> get() = lba.sigma
   inline val gamma: Set<Char> get() = lba.gamma
+  inline val gammaWithoutMarkers: Set<Char> get() = lba.gamma - lba.leftMarker - lba.rightMarker
   inline val states: IntRange get() = 1..lba.nStates
   inline val q0: Int get() = lba.startState
   inline val lm: Char get() = lba.leftMarker
