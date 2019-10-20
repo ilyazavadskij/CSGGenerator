@@ -8,7 +8,7 @@ import lba.LBA.Transition.MoveDirection.RIGHT
 
 object LBAtoGrammarConverter {
 
-  fun convert(lba: LBA, includeSingleCellRules: Boolean = true): Grammar {
+  fun convert(lba: LBA, includeSingleCellRules: Boolean = true, includeTwoSellRules: Boolean = true): Grammar {
     val transformScheme = scheme {
 
       //<editor-fold desc="common">
@@ -80,11 +80,13 @@ object LBAtoGrammarConverter {
           }
         }
       }
-      transitionRule {
-        predicate { isNotFinalState(q) && x != lm && y != lm  && d == RIGHT }
-        transform {
-          sigmaSigmaGamma { a, b, z ->
-            production(n("[$lm, $q, $x, $a]"), n("[$z, $b, $rm]"), TO, n("[$lm, $y, $a]"), n("[$p, $z, $b, $rm]"))
+      if (includeTwoSellRules) {
+        transitionRule {
+          predicate { isNotFinalState(q) && x != lm && y != lm && d == RIGHT }
+          transform {
+            sigmaSigmaGamma { a, b, z ->
+              production(n("[$lm, $q, $x, $a]"), n("[$z, $b, $rm]"), TO, n("[$lm, $y, $a]"), n("[$p, $z, $b, $rm]"))
+            }
           }
         }
       }
@@ -142,11 +144,13 @@ object LBAtoGrammarConverter {
           }
         }
       }
-      transitionRule {
-        predicate { isNotFinalState(q) && x != lm && y != lm  && d == LEFT }
-        transform {
-          sigmaSigmaGamma { a, b, z ->
-            production(n("[$lm, $z, $b]"), n("[$q, $x, $a, $rm]"), TO, n("[$lm, $p, $z, $b]"), n("[$y, $a, $rm]"))
+      if (includeTwoSellRules) {
+        transitionRule {
+          predicate { isNotFinalState(q) && x != lm && y != lm && d == LEFT }
+          transform {
+            sigmaSigmaGamma { a, b, z ->
+              production(n("[$lm, $z, $b]"), n("[$q, $x, $a, $rm]"), TO, n("[$lm, $p, $z, $b]"), n("[$y, $a, $rm]"))
+            }
           }
         }
       }
