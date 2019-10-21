@@ -18,4 +18,15 @@ fun main() {
   println("Minimized production amount: ${minimized.productions.size}")
 
   minimized.findFirst(10, trackLengthRestriction = 30) { System.out.printf("%2d: %s\n", it.length, it) }
+
+  val unrestrictedGrammar = LBAtoUnrestrictedGrammarConverter(lba).convert()
+  val minimizedUnrestrictedGrammar = unrestrictedGrammar.minimize()
+
+  unrestrictedGrammar.productions.stream().forEach(System.out::println)
+  FileWriter("UG.json").use { it.write(gson.toJson(minimizedUnrestrictedGrammar, Grammar::class.java)) }
+
+  println("Raw       production amount: ${unrestrictedGrammar.productions.size}")
+  println("Minimized production amount: ${minimizedUnrestrictedGrammar.productions.size}")
+
+  minimizedUnrestrictedGrammar.findFirst(10, trackLengthRestriction = 30) { System.out.printf("%2d: %s\n", it.length, it) }
 }
